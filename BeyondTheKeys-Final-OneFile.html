@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beyond the Keys – Super Admin System (One File)</title>
+  <style>:root{
+  --bg:#F8F8F7; --text:#222; --accent:#0A1B2A; --gold:#D4AF37; --card:#FFFFFF; --border:#DDD;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:var(--card);border-bottom:2px solid var(--gold);position:sticky;top:0}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:6px;background:conic-gradient(from 90deg,#0A1B2A 0 25%,#D4AF37 25% 40%,#B8860B 40% 55%,#0A1B2A 55% 100%);}
+h1{font-size:20px;color:var(--accent);margin:0}
+.nav button{background:none;border:1px solid var(--accent);color:var(--accent);padding:6px 10px;margin-left:6px;border-radius:6px;cursor:pointer;transition:all .3s}
+.nav button:hover{background:var(--accent);color:#fff}
+.container{padding:20px;max-width:1200px;margin:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:20px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card h2{color:var(--accent);margin:0 0 6px}
+.table{width:100%;border-collapse:collapse;margin-top:10px}
+.table th,.table td{border-bottom:1px solid var(--border);padding:6px;text-align:left}
+.progressbar{width:100%;height:10px;background:#EEE;border-radius:10px;overflow:hidden;margin-top:10px}
+.progressbar div{height:100%;background:var(--gold);width:0;transition:width .4s}
+.kanban{display:flex;gap:10px;overflow-x:auto}
+.column{background:#FAFAFA;border:1px solid var(--border);border-radius:10px;flex:1;min-width:220px}
+.column h3{text-align:center;color:var(--accent)}
+.items{padding:8px}
+.item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px;margin-bottom:6px;cursor:grab}
+.footer{text-align:center;padding:10px;color:#555;font-size:13px}
+.hint{font-size:12px;color:#666;margin-top:8px}
+.roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.r-card{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}
+.r-card .title{font-weight:bold;color:var(--accent);margin-bottom:6px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--border);font-size:12px;margin-right:6px}
+.badge.done{color:#0a7a0a;border-color:#0a7a0a}
+.badge.in_progress{color:#b36b00;border-color:#b36b00}
+.badge.planned{color:#666;border-color:#666}
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand"><div class="logo"></div><h1>Beyond the Keys – Super Admin System</h1></div>
+    <nav class="nav">
+      <button id="nav-dashboard">Dashboard</button>
+      <button id="nav-crm">CRM</button>
+      <button id="nav-kanban">Kanban</button>
+      <button id="nav-about">About</button>
+      <button id="btn-export">Export JSON</button>
+    </nav>
+  </header>
+
+  <main class="container" id="dashboard-view">
+    <section class="card">
+      <h2>Project Progress</h2>
+      <p><span id="milestones-done">0</span> / <span id="milestones-total">0</span> milestones completed</p>
+      <div class="progressbar"><div id="bar-project"></div></div>
+      <div class="hint">Progress is calculated from the roadmap milestones (Done / Total).</div>
+    </section>
+    <section class="card">
+      <h2>Active Tasks</h2>
+      <table id="tasks-table" class="table"></table>
+    </section>
+    <section class="card">
+      <h2>Roadmap</h2>
+      <div id="roadmap-cards" class="roadmap"></div>
+    </section>
+  </main>
+
+  <main class="container" id="crm-view" style="display:none;">
+    <section class="card">
+      <h2>Contacts</h2>
+      <input type="file" id="import-contacts" accept=".csv" />
+      <table id="contacts-table" class="table"></table>
+    </section>
+    <section class="card">
+      <h2>Companies</h2>
+      <table id="companies-table" class="table"></table>
+    </section>
+    <section class="card">
+      <h2>Deals</h2>
+      <input type="file" id="import-deals" accept=".csv" />
+      <table id="deals-table" class="table"></table>
+    </section>
+    <section class="card">
+      <h2>Activities</h2>
+      <table id="activities-table" class="table"></table>
+    </section>
+  </main>
+
+  <main class="container" id="kanban-view" style="display:none;">
+    <section class="card">
+      <h2>Deals Pipeline</h2>
+      <div id="kanban" class="kanban">
+        <div class="column" data-stage="Discovery"><h3>Discovery</h3><div class="items"></div></div>
+        <div class="column" data-stage="Proposal"><h3>Proposal</h3><div class="items"></div></div>
+        <div class="column" data-stage="Negotiation"><h3>Negotiation</h3><div class="items"></div></div>
+        <div class="column" data-stage="Closed"><h3>Closed</h3><div class="items"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <main class="container" id="about-view" style="display:none;">
+    <section class="card">
+      <h2>About This System</h2>
+      <p>This single-file build is part of <strong>Beyond the Keys</strong> by <strong>Yotam Ricks</strong>.</p>
+      <p>Version: <strong>Final-OneFile</strong> — updated 2025-10-29 08:46</p>
+      <p>Includes Project Dashboard (not writing), live Roadmap, CRM tables, Kanban, CSV import and JSON export.</p>
+      <p>No external files required — upload this file as <code>index.html</code> and you're done.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Beyond the Keys. All rights reserved.</p>
+  </footer>
+
+  <script>window.__BTK_DATA = {"tasks": [{"id": "T-001", "title": "Final site deployed (static, flat structure)", "owner": "Yotam", "priority": "A", "status": "done"}, {"id": "T-002", "title": "CRM module (contacts/companies/deals/activities)", "owner": "Yotam", "priority": "A", "status": "done"}, {"id": "T-003", "title": "Kanban pipeline enabled", "owner": "Yotam", "priority": "B", "status": "done"}, {"id": "T-004", "title": "Roadmap defined and connected to progress bar", "owner": "Yotam", "priority": "A", "status": "in_progress"}, {"id": "T-005", "title": "Data import templates prepared (CSV)", "owner": "Yotam", "priority": "B", "status": "in_progress"}], "contacts": [{"name": "—", "email": "", "phone": "", "role": "", "company": "", "status": "", "tags": ""}], "companies": [{"name": "—", "website": "", "category": "", "city": "", "country": ""}], "deals": [{"name": "—", "client": "", "stage": "Discovery", "value_ils": 0, "due": ""}], "activities": [{"date": "", "type": "", "with": "", "note": "", "link": ""}], "roadmap": [{"id": "Q4-2025", "title": "Q4 2025 — System Foundation", "milestones": [{"id": "M1", "title": "Final static site published", "due": "2025-10-29", "status": "done"}, {"id": "M2", "title": "CRM core (contacts/companies/deals/activities)", "due": "2025-10-29", "status": "done"}, {"id": "M3", "title": "Kanban pipeline available", "due": "2025-10-29", "status": "done"}, {"id": "M4", "title": "Project progress dashboard (not writing)", "due": "2025-10-29", "status": "done"}, {"id": "M5", "title": "Initial data templates (CSV/JSON)", "due": "2025-10-29", "status": "in_progress"}]}, {"id": "Nov-2025", "title": "November 2025 — Operationalize", "milestones": [{"id": "M6", "title": "Define weekly operating rhythm", "due": "2025-11-03", "status": "planned"}, {"id": "M7", "title": "Import first real contacts and deals", "due": "2025-11-05", "status": "planned"}, {"id": "M8", "title": "Create first status report bundle", "due": "2025-11-10", "status": "planned"}]}], "meta": {"version": "Final-OneFile", "updated": "2025-10-29 08:46"}};</script>
+  <script>
+function navShow(id){['dashboard-view','crm-view','kanban-view','about-view'].forEach(v=>document.getElementById(v).style.display=v===id?'block':'none');}
+function tableFrom(data){if(!data||!data.length)return '<tr><td>No data</td></tr>';const cols=[...new Set(data.flatMap(o=>Object.keys(o)))];const head='<tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>';const rows=data.map(r=>'<tr>'+cols.map(c=>'<td>'+(r[c]??'')+'</td>').join('')+'</tr>').join('');return head+rows;}
+function renderTable(id,data){document.getElementById(id).innerHTML=tableFrom(data);}
+function setBar(id,part,total){const el=document.getElementById(id);const pct= total>0? Math.min(100, Math.round(part*100/total)) : 0; el.style.width=pct+'%';}
+
+function renderRoadmap(list){const wrap=document.getElementById('roadmap-cards'); wrap.innerHTML=''; list.forEach(sec=>{const box=document.createElement('div');box.className='r-card';const title=sec.title||sec.id||'Phase';const total=(sec.milestones||[]).length;let done=0;(sec.milestones||[]).forEach(m=>{if((m.status||'').toLowerCase()==='done')done++;});box.innerHTML='<div class="title">'+title+'</div><div class="hint">'+done+' / '+total+' completed</div>'; (sec.milestones||[]).forEach(m=>{const st=(m.status||'planned'); const badge=st==='done'?'done':(st==='in_progress'?'in_progress':'planned'); const line=document.createElement('div'); line.innerHTML = '<span class="badge '+badge+'">'+st.replace('_',' ')+'</span> '+(m.title||'')+' <span class="hint">'+(m.due||'')+'</span>'; box.appendChild(line);}); wrap.appendChild(box);}); }
+
+function parseCSVText(text){const lines=text.split(/\r?\n/).filter(Boolean);if(!lines.length)return[];const headers=lines.shift().split(',').map(s=>s.trim());return lines.map(line=>{const values=line.split(',');const obj={};headers.forEach((h,i)=>obj[h]= (values[i]||'').trim());return obj;});}
+function importCSVFrom(file, cb){const r=new FileReader(); r.onload=e=>{cb(parseCSVText(e.target.result));}; r.readAsText(file); }
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const tasks = window.__BTK_DATA.tasks;
+  const contacts = window.__BTK_DATA.contacts;
+  const companies = window.__BTK_DATA.companies;
+  const deals = window.__BTK_DATA.deals;
+  const activities = window.__BTK_DATA.activities;
+  const roadmap = window.__BTK_DATA.roadmap;
+  // Progress from roadmap
+  let total=0, done=0;
+  roadmap.forEach(sec => (sec.milestones||[]).forEach(m=>{total++; if((m.status||'').toLowerCase()==='done') done++;}));
+  document.getElementById('milestones-done').textContent=done;
+  document.getElementById('milestones-total').textContent=total;
+  setBar('bar-project', done, total);
+
+  renderTable('tasks-table', tasks);
+  renderTable('contacts-table', contacts);
+  renderTable('companies-table', companies);
+  renderTable('deals-table', deals);
+  renderTable('activities-table', activities);
+  renderRoadmap(roadmap);
+
+  // Kanban
+  const board=document.getElementById('kanban');
+  deals.forEach(d=>{const col=board.querySelector('.column[data-stage="'+(d.stage||'Discovery')+'"] .items'); if(col){const div=document.createElement('div'); div.className='item'; div.textContent=(d.name||'')+' – ₪'+(d.value_ils||0); col.appendChild(div);} });
+
+  // CSV import
+  document.getElementById('import-contacts').addEventListener('change',e=>{const f=e.target.files[0]; if(!f)return; importCSVFrom(f,rows=>renderTable('contacts-table',rows));});
+  document.getElementById('import-deals').addEventListener('change',e=>{const f=e.target.files[0]; if(!f)return; importCSVFrom(f,rows=>{renderTable('deals-table',rows);});});
+
+  // Export bundle
+  document.getElementById('btn-export').addEventListener('click',()=>{ const bundle={tasks,contacts,companies,deals,activities,roadmap,meta:window.__BTK_DATA.meta}; const blob=new Blob([JSON.stringify(bundle,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='btk-project-bundle.json'; a.click(); });
+
+  document.getElementById('nav-dashboard').onclick=()=>navShow('dashboard-view');
+  document.getElementById('nav-crm').onclick=()=>navShow('crm-view');
+  document.getElementById('nav-kanban').onclick=()=>navShow('kanban-view');
+  document.getElementById('nav-about').onclick=()=>navShow('about-view');
+});
+</script>
+</body>
+</html>
