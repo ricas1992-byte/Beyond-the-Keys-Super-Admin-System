@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beyond the Keys — מערכת ניהול־על + CRM</title>
+
+  <!-- Favicon + Meta (OG/Twitter) -->
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0A1B2A">
+  <meta property="og:title" content="Beyond the Keys — מערכת ניהול־על + CRM">
+  <meta property="og:description" content="דשבורד כתיבה, CRM קל־משקל, Kanban לעסקאות, ייבוא CSV, RTL מלא.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="./favicon.svg" class="logo" alt="BTK">
+      <div class="titles">
+        <h1>Beyond the Keys — מערכת ניהול־על</h1>
+        <div class="subtitle">דשבורד כתיבה · CRM · Kanban · ייבוא CSV</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button id="nav-dashboard" title="לוח הבקרה הראשי">דשבורד</button>
+      <button id="nav-crm" title="אנשי קשר, ארגונים, עסקאות, אינטראקציות">CRM</button>
+      <button id="nav-kanban" title="צינור עסקאות — גרור ושחרר">Kanban</button>
+      <button id="btn-export" title="ייצוא נתונים כ־JSON אחד">ייצוא JSON</button>
+    </nav>
+  </header>
+
+  <!-- DASHBOARD -->
+  <main class="container" id="dashboard-view">
+    <section class="card">
+      <h2>סטטוס כתיבה</h2>
+      <div class="stat"><span id="words-current">0</span> / <span id="words-target">40,000</span> מילים</div>
+      <div class="progressbar"><div id="bar-words"></div></div>
+      <div class="hint">טיפ: ניתן לעדכן את המספרים ב־<code>progress.json</code> או זמנית בשדה למטה.</div>
+      <div class="quick">
+        <label>מילים נוכחיות <input id="wc-input" type="number" min="0" style="width:110px"></label>
+        <label>פרקים שהושלמו <input id="cd-input" type="number" min="0" style="width:110px"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>משימות פעילות</h2>
+      <table class="table" id="tasks-table"></table>
+      <div class="hint">ערוך ב־<code>tasks.json</code>. עדיפויות: A/B/C · סטטוס: planned / in_progress / done</div>
+    </section>
+  </main>
+
+  <!-- CRM -->
+  <main class="container" id="crm-view" style="display:none;">
+    <section class="card">
+      <h2>אנשי קשר</h2>
+      <div class="actions">
+        <label class="btn">ייבוא CSV אנשי קשר <input type="file" id="import-contacts" accept=".csv" hidden></label>
+        <a class="btn ghost" id="download-contacts-template" href="#" title="תבנית CSV מוכנה">תבנית CSV</a>
+      </div>
+      <table class="table" id="contacts-table"></table>
+      <div class="hint">שדות מומלצים: name, email, phone, role, company, status, tags</div>
+    </section>
+
+    <section class="card">
+      <h2>ארגונים</h2>
+      <table class="table" id="companies-table"></table>
+      <div class="hint">ערוך ב־<code>companies.json</code>. שדות: name, website, category, city, country</div>
+    </section>
+
+    <section class="card">
+      <h2>עסקאות</h2>
+      <div class="actions">
+        <label class="btn">ייבוא CSV עסקאות <input type="file" id="import-deals" accept=".csv" hidden></label>
+        <a class="btn ghost" id="download-deals-template" href="#" title="תבנית CSV מוכנה">תבנית CSV</a>
+      </div>
+      <table class="table" id="deals-table"></table>
+      <div class="hint">שדות: name, client, stage, value_ils, due</div>
+    </section>
+
+    <section class="card">
+      <h2>אינטראקציות</h2>
+      <table class="table" id="activities-table"></table>
+      <div class="hint">שדות: date, type, with, note, link</div>
+    </section>
+  </main>
+
+  <!-- KANBAN -->
+  <main class="container" id="kanban-view" style="display:none;">
+    <section class="card">
+      <h2>צינור עסקאות (גרור ושחרר)</h2>
+      <div class="kanban" id="kanban-board">
+        <div class="column" data-stage="Discovery"><h3>Discovery</h3><div class="items"></div></div>
+        <div class="column" data-stage="Proposal"><h3>Proposal</h3><div class="items"></div></div>
+        <div class="column" data-stage="Negotiation"><h3>Negotiation</h3><div class="items"></div></div>
+        <div class="column" data-stage="Closed"><h3>Closed</h3><div class="items"></div></div>
+      </div>
+      <div class="hint">טיפ: גרור עסקה בין העמודות. לשמירה קבועה עדכן את <code>deals.json</code> בריפו.</div>
+    </section>
+  </main>
+
+  <footer class="footer">© Beyond the Keys · גרסת CRM מלאה · עודכן 2025-10-29 08:13</footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>

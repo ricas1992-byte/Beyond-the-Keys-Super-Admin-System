@@ -1,0 +1,20 @@
+[
+  {
+    "name": "דנה כהן",
+    "email": "dana@example.com",
+    "phone": "+972-50-1234567",
+    "role": "פסנתרנית",
+    "company": "אקדמיה למוזיקה",
+    "status": "Active",
+    "tags": "פסנתר;מחקר"
+  },
+  {
+    "name": "יואב לוי",
+    "email": "yoav@example.com",
+    "phone": "+972-52-2223344",
+    "role": "מורה",
+    "company": "סטודיו תל אביב",
+    "status": "Prospect",
+    "tags": "הוראה"
+  }
+]

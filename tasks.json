@@ -1,0 +1,23 @@
+[
+  {
+    "id": "T-001",
+    "title": "סגירת מסמכי יסוד",
+    "owner": "GPT-5 Thinking",
+    "priority": "A",
+    "status": "in_progress"
+  },
+  {
+    "id": "T-002",
+    "title": "ייבוא אנשי קשר ראשוני (CSV)",
+    "owner": "Yotam",
+    "priority": "A",
+    "status": "planned"
+  },
+  {
+    "id": "T-003",
+    "title": "הקמת Kanban לעסקאות",
+    "owner": "GPT-5 Thinking",
+    "priority": "B",
+    "status": "done"
+  }
+]
